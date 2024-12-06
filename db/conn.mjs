@@ -1,16 +1,15 @@
-import { MongoClient } from "mongodb";
+import mongoose from "mongoose";
 import dotenv from "dotenv";
-
 dotenv.config();
-const client = new MongoClient(process.env.MONGO_URI);
 
-let conn;
-try {
-  conn = await client.connect();
-} catch (e) {
-  console.error(e);
-}
+// Global configuration
+const mongoURI = process.env.ATLAS_URI;
+const db = mongoose.connection;
 
-let db = conn.db("sample_training");
+// connect to mongo
+mongoose.connect(mongoURI);
+mongoose.connection.once("open", () => {
+  console.log("connected to mongo");
+});
 
 export default db;
